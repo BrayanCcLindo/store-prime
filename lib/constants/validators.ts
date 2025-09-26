@@ -1,5 +1,4 @@
 import { z } from "zod";
-// import { Decimal } from "../generated/prisma/runtime/library";
 
 export const insertProductSchema = z.object({
   name: z.string().min(1, "El nombre es requerido"),
