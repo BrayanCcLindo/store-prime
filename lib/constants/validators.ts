@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { email, z } from "zod";
 
 export const insertProductSchema = z.object({
   name: z.string().min(1, "El nombre es requerido"),
@@ -11,4 +11,11 @@ export const insertProductSchema = z.object({
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
   price: z.number()
+});
+
+//schema to validator sign in
+
+export const signInFormSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "password debe tener minimo 6 digitos")
 });

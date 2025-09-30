@@ -1,0 +1,81 @@
+"use client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { signInWithCredential } from "@/lib/actions/user.action";
+import { Lock, Mail } from "lucide-react";
+import React, { useActionState } from "react";
+
+import { useFormStatus } from "react-dom";
+
+const signInDefaultValues = {
+  email: "",
+  password: ""
+};
+
+export default function CredentialsSignInForm() {
+  const [data, action] = useActionState(signInWithCredential, {
+    success: false,
+    message: ""
+  });
+
+  const SignInButton = () => {
+    const { pending } = useFormStatus();
+    return <Button type="submit">{pending ? "pending " : "ya inicie"}</Button>;
+  };
+  //   console.log(data, "data credentials");
+
+  return (
+    <form className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <div className="relative">
+          <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+          <Input
+            id="email"
+            type="email"
+            placeholder="tu@email.com"
+            defaultValue={signInDefaultValues.email}
+            // value={email}
+            // onChange={(e) => setEmail(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label htmlFor="password">Contraseña</Label>
+          <button
+            //   onClick={() => console.log("Forgot password")}
+            className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
+          >
+            ¿Olvidaste tu contraseña?
+          </button>
+        </div>
+        {/* {data && !data.success && (
+          <div className="text-red-500">{data.message}</div>
+        )} */}
+        <div className="relative">
+          <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+          <Input
+            id="password"
+            type={"password"}
+            placeholder="••••••••"
+            // value={password}
+            // onChange={(e) => setPassword(e.target.value)}
+            className="pl-10 pr-10"
+          />
+          <button
+            type="button"
+            // onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-3 text-slate-400 hover:text-slate-600"
+          >
+            {/* {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />} */}
+          </button>
+        </div>
+      </div>
+      <SignInButton />
+    </form>
+  );
+}
