@@ -41,7 +41,7 @@ export default async function ProductDetail({
             <div className="flex items-start justify-between">
               <div className="space-y-2">
                 <p className="text-sm text-muted-foreground">{product.brand}</p>
-                <h1 className="text-3xl font-bold tracking-tight">
+                <h1 id="titulo" className="text-3xl font-bold tracking-tight">
                   {product.name}
                 </h1>
               </div>
