@@ -21,12 +21,20 @@ export default function CredentialsSignInForm() {
 
   const SignInButton = () => {
     const { pending } = useFormStatus();
-    return <Button type="submit">{pending ? "pending " : "ya inicie"}</Button>;
+    return (
+      <Button
+        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+        type="submit"
+      >
+        {pending ? "pending " : "Sign In"}
+      </Button>
+    );
   };
+
   //   console.log(data, "data credentials");
 
   return (
-    <form className="space-y-4">
+    <form action={action} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <div className="relative">
@@ -34,6 +42,7 @@ export default function CredentialsSignInForm() {
           <Input
             id="email"
             type="email"
+            name="email"
             placeholder="tu@email.com"
             defaultValue={signInDefaultValues.email}
             // value={email}
@@ -53,15 +62,16 @@ export default function CredentialsSignInForm() {
             ¿Olvidaste tu contraseña?
           </button>
         </div>
-        {/* {data && !data.success && (
+        {data && !data.success && (
           <div className="text-red-500">{data.message}</div>
-        )} */}
+        )}
         <div className="relative">
           <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
           <Input
             id="password"
             type={"password"}
             placeholder="••••••••"
+            name="password"
             // value={password}
             // onChange={(e) => setPassword(e.target.value)}
             className="pl-10 pr-10"

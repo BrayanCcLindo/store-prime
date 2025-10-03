@@ -1,4 +1,4 @@
-import { email, z } from "zod";
+import { z } from "zod";
 
 export const insertProductSchema = z.object({
   name: z.string().min(1, "El nombre es requerido"),

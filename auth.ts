@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthConfig, Session, User } from "next-auth";
 import { prisma } from "./db/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import CredentialProviders from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { compareSync } from "bcrypt-ts-edge";
 import { JWT } from "next-auth/jwt";
 
@@ -16,29 +16,29 @@ export const config = {
   },
   adapter: PrismaAdapter(prisma),
   providers: [
-    CredentialProviders({
+    CredentialsProvider({
       credentials: {
         email: { label: "email", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (credentials === null) return null;
-        const user = await prisma.user.findFirst({
+        if (credentials == null) return null;
+        const user = await prisma.user.findUnique({
           where: {
             email: credentials.email as string
           }
         });
-
         if (user && user?.password) {
           const isMatch = compareSync(
             credentials.password as string,
-            user?.password
+            user.password
           );
+          console.log(isMatch, "isMatch");
 
           if (isMatch) {
             return {
               id: user.id,
-              email: user.id,
+              email: user.email,
               name: user.name,
               role: user.role
             };
