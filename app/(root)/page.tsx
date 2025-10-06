@@ -10,8 +10,6 @@ export const metadata = {
 };
 export default async function Home() {
   const products = await latestProducts(5);
-  console.log(latestProducts, "latestProducts");
-
   return (
     <>
       <Button variant="destructive">page</Button>

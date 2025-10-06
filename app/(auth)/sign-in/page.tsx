@@ -9,12 +9,17 @@ import React from "react";
 import CredentialsSignInForm from "./credentials-signin-form";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
-export default async function SignInPage() {
+export default async function SignInPage({
+  searchParams
+}: {
+  searchParams: { callbackUrl: string };
+}) {
   const session = await auth();
-
+  const { callbackUrl } = await searchParams;
   if (session) {
-    return redirect("/");
+    return redirect(callbackUrl || "/");
   }
 
   return (
@@ -38,6 +43,9 @@ export default async function SignInPage() {
           <CardContent className="space-y-4">
             <CredentialsSignInForm />
           </CardContent>
+          <Link className="text-sm text-blue-500" href={"/sign-up"}>
+            Si no estas registrado, registrate
+          </Link>
         </Card>
 
         <p className="text-center text-xs text-slate-500 mt-6">

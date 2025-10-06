@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { signInWithCredential } from "@/lib/actions/user.action";
 import { Lock, Mail } from "lucide-react";
 import React, { useActionState } from "react";
-
+import { useSearchParams } from "next/navigation";
 import { useFormStatus } from "react-dom";
 
 const signInDefaultValues = {
@@ -18,6 +18,9 @@ export default function CredentialsSignInForm() {
     success: false,
     message: ""
   });
+
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const SignInButton = () => {
     const { pending } = useFormStatus();
@@ -36,6 +39,7 @@ export default function CredentialsSignInForm() {
   return (
     <form action={action} className="space-y-4">
       <div className="space-y-2">
+        <input type="hidden" name="callbackUrl" value={callbackUrl} />
         <Label htmlFor="email">Email</Label>
         <div className="relative">
           <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />

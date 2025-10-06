@@ -33,7 +33,6 @@ export const config = {
             credentials.password as string,
             user.password
           );
-          console.log(isMatch, "isMatch");
 
           if (isMatch) {
             return {
