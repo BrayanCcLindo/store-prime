@@ -5,6 +5,7 @@ import { signIn, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
 import { prisma } from "@/db/prisma";
+import { ZodError } from "zod";
 
 export async function signInWithCredential(
   prevState: unknown,
@@ -46,14 +47,16 @@ export async function SignUpUser(prevState: unknown, formatData: FormData) {
       password: formatData.get("password"),
       confirmPassword: formatData.get("confirmPassword")
     });
+    console.log(user, "usser");
 
     const plainPassword = user.password;
-    user.password = hashSync(user.password, 10);
+    const hashedPassword = hashSync(user.password, 10);
+
     await prisma.user.create({
       data: {
         name: user.name,
-        email: user.password,
-        password: user.password
+        email: user.email,
+        password: hashedPassword
       }
     });
 
@@ -61,17 +64,38 @@ export async function SignUpUser(prevState: unknown, formatData: FormData) {
       email: user.email,
       password: plainPassword
     });
+
     return {
-      message: "User register successfully",
+      message: ["User register successfully"],
       success: true
     };
   } catch (error) {
     if (isRedirectError(error)) {
       throw error;
     }
-    return {
-      success: false,
-      message: "User was not register"
-    };
+
+    if (error instanceof ZodError) {
+      const fieldErrors: Record<string, string>[] = [];
+      error.issues.forEach(err => {
+        console.log("➡️ Procesando error:", {
+          path: err.path,
+          message: err.message,
+          code: err.code
+        });
+        const fieldName = err.path[0] as string;
+
+        // Agregar el mensaje de error
+        fieldErrors.push({
+          [fieldName]: err.message
+        });
+      });
+
+      console.log("✅ Errores agrupados por campo:", fieldErrors);
+
+      return {
+        success: false,
+        message: fieldErrors
+      };
+    }
   }
 }

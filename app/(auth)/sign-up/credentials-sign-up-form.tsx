@@ -5,7 +5,7 @@ import { SignUpUser } from "@/lib/actions/user.action";
 import { Label } from "@radix-ui/react-label";
 import { Eye, Lock, Mail, User } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import React, { useActionState } from "react";
+import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 
 const signUpDefaultValues = {
@@ -18,8 +18,9 @@ const signUpDefaultValues = {
 export default function CredentialsSignUpForm() {
   const [data, action] = useActionState(SignUpUser, {
     success: false,
-    message: ""
+    message: []
   });
+  console.log(data, "data");
 
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "";
@@ -115,9 +116,17 @@ export default function CredentialsSignUpForm() {
       </div>
 
       <SignUpButton />
-      {data && !data.success && (
-        <div className="text-red-500">{data.message}</div>
-      )}
+      {
+        data &&
+          !data.success &&
+          data.message &&
+          data.message.map(message => (
+            <div className="text-red-500" key={message.toString()}>
+              {message.toString()}
+            </div>
+          ))
+        // <div className="text-red-500">{data.message}</div>
+      }
     </form>
   );
 }

@@ -24,12 +24,10 @@ export const signInFormSchema = z.object({
 
 export const signUpFormSchema = z
   .object({
-    name: z.string().min(3, "name debe tener 3 digitos"),
+    name: z.string().min(3, "El nombre debe tener 3 digitos"),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "password debe tener minimo 6 digitos"),
-    confirmPassword: z
-      .string()
-      .min(6, "Confirma password must be tener 6 caracteres")
+    confirmPassword: z.string()
   })
   .refine(data => data.password === data.confirmPassword, {
     message: "Password doesnt match",
