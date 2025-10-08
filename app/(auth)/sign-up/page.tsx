@@ -18,7 +18,8 @@ export default async function SignUpPage({
 }) {
   const session = await auth();
 
-  const { callbackUrl } = await searchParams;
+  const { callbackUrl } = searchParams;
+
   if (session) {
     return redirect(callbackUrl || "/");
   }
