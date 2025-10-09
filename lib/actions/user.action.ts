@@ -47,7 +47,6 @@ export async function SignUpUser(prevState: unknown, formatData: FormData) {
       password: formatData.get("password"),
       confirmPassword: formatData.get("confirmPassword")
     });
-    console.log(user, "usser");
 
     const plainPassword = user.password;
     const hashedPassword = hashSync(user.password, 10);
