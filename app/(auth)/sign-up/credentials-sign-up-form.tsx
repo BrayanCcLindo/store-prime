@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SignUpUser } from "@/lib/actions/user.action";
 import { Label } from "@radix-ui/react-label";
-import { Eye, Lock, Mail, User } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 
 const signUpDefaultValues = {
@@ -16,11 +16,12 @@ const signUpDefaultValues = {
 };
 
 export default function CredentialsSignUpForm() {
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [data, action] = useActionState(SignUpUser, {
     success: false,
     message: []
   });
-  console.log(data, "data");
 
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "";
@@ -74,7 +75,7 @@ export default function CredentialsSignUpForm() {
           <Input
             id="password"
             name="password"
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             placeholder="••••••••"
             defaultValue={signUpDefaultValues.password}
             //   value={formData.password}
@@ -83,10 +84,14 @@ export default function CredentialsSignUpForm() {
           />
           <button
             type="button"
-            //   onClick={() => setShowPassword(!showPassword)}
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
           >
-            <Eye className="h-4 w-4" />
+            {showConfirmPassword ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
           </button>
         </div>
       </div>
@@ -98,7 +103,7 @@ export default function CredentialsSignUpForm() {
           <Input
             id="confirmPassword"
             name="confirmPassword"
-            type={"password"}
+            type={showConfirmPassword ? "text" : "password"}
             placeholder="••••••••"
             defaultValue={signUpDefaultValues.confirmPassword}
             //   value={formData.confirmPassword}
@@ -107,26 +112,27 @@ export default function CredentialsSignUpForm() {
           />
           <button
             type="button"
-            //   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
           >
-            {<Eye className="h-4 w-4" />}
+            {showConfirmPassword ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
           </button>
         </div>
       </div>
 
       <SignUpButton />
-      {
-        data &&
+      <div className="space-y-1 text-sm text-red-500">
+        {data &&
           !data.success &&
           data.message &&
           data.message.map(message => (
-            <div className="text-red-500" key={message.toString()}>
-              {message.toString()}
-            </div>
-          ))
-        // <div className="text-red-500">{data.message}</div>
-      }
+            <div key={message.toString()}>{message.toString()}</div>
+          ))}
+      </div>
     </form>
   );
 }

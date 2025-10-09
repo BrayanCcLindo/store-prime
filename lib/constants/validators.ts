@@ -24,12 +24,25 @@ export const signInFormSchema = z.object({
 
 export const signUpFormSchema = z
   .object({
-    name: z.string().min(3, "El nombre debe tener 3 digitos"),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "password debe tener minimo 6 digitos"),
-    confirmPassword: z.string()
+    name: z
+      .string()
+      .min(3, "El nombre debe tener al menos 3 caracteres")
+      .max(50, "El nombre es demasiado largo")
+      .trim(),
+    email: z
+      .string()
+      .email("El formato del correo electrónico no es válido")
+      .toLowerCase()
+      .trim(),
+    password: z
+      .string()
+      .min(6, "La contraseña debe tener al menos 6 caracteres")
+      .max(100, "La contraseña es demasiado larga"),
+    confirmPassword: z
+      .string()
+      .min(1, "La confirmación de contraseña no puede estar vacía")
   })
   .refine(data => data.password === data.confirmPassword, {
-    message: "Password doesnt match",
+    message: "Las contraseñas no coinciden",
     path: ["confirmPassword"]
   });
