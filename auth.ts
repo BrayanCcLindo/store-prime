@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthConfig, Session, User } from "next-auth";
+import NextAuth, { NextAuthConfig, User, Session } from "next-auth";
 import { prisma } from "./db/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -33,7 +33,6 @@ export const config = {
             credentials.password as string,
             user.password
           );
-
           if (isMatch) {
             return {
               id: user.id,
@@ -61,12 +60,35 @@ export const config = {
     }) {
       if (session.user) {
         session.user.id = token.sub;
+        // @ts-expect-error: role is a custom property added to the user
+        session.user.role = token.role;
+        session.user.name = token.name;
         if (trigger === "update") {
           session.user.name = user.name;
+          // session.user.role = token.role;
+          // session.user.name = token.name;
         }
       }
-
       return session;
+    },
+    async jwt({ token, user }: { token: JWT; user: User }) {
+      if (user) {
+        // @ts-expect-error: role is a custom property added to the user
+        token.role = user.role;
+        if (user.name === "NO_NAME") {
+          token.name = user.email!.split("@")[0];
+          await prisma.user.update({
+            where: {
+              id: user.id as string
+            },
+            data: {
+              name: token.name
+            }
+          });
+          user.name = token.name;
+        }
+      }
+      return token;
     }
   }
 } satisfies NextAuthConfig;
