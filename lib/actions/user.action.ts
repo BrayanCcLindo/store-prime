@@ -75,22 +75,11 @@ export async function SignUpUser(prevState: unknown, formatData: FormData) {
     }
 
     if (error instanceof ZodError) {
-      const fieldErrors: Record<string, string>[] = [];
+      const fieldErrors: string[] = [];
+
       error.issues.forEach(err => {
-        console.log("➡️ Procesando error:", {
-          path: err.path,
-          message: err.message,
-          code: err.code
-        });
-        const fieldName = err.path[0] as string;
-
-        // Agregar el mensaje de error
-        fieldErrors.push({
-          [fieldName]: err.message
-        });
+        fieldErrors.push(err.message);
       });
-
-      console.log("✅ Errores agrupados por campo:", fieldErrors);
 
       return {
         success: false,
