@@ -51,10 +51,11 @@ export async function addItemToCart(data: CardItem) {
         sessionIdCart: sessionIdCart,
         ...calcPrice([item])
       });
+      console.log(newCart);
 
-      await prisma.cart.create({
-        data: newCart
-      });
+      // await prisma.cart.create({
+      //   data: newCart
+      // });
 
       revalidatePath(`/product/${product.slug}`);
 
