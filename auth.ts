@@ -4,6 +4,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compareSync } from "bcrypt-ts-edge";
 import { JWT } from "next-auth/jwt";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 export const config = {
   pages: {
@@ -89,6 +91,21 @@ export const config = {
         }
       }
       return token;
+    },
+    authorized({ request, auth }) {
+      if (!request.cookies.get("sessionIdCart")) {
+        const sessionIdCart = crypto.randomUUID();
+        const newRequestHeaders = new Headers(request.headers);
+        const response = NextResponse.next({
+          request: {
+            headers: newRequestHeaders
+          }
+        });
+        response.cookies.set("sessionIdCart", sessionIdCart);
+        return response;
+      } else {
+        return true;
+      }
     }
   }
 } satisfies NextAuthConfig;
