@@ -56,7 +56,6 @@ export async function addItemToCart(data: CardItem) {
         data: newCart
       });
 
-      // Revalidate product page
       revalidatePath(`/product/${product.slug}`);
 
       return {
