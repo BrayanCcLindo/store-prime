@@ -7,11 +7,8 @@ import { Lock, Mail } from "lucide-react";
 import React, { useActionState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useFormStatus } from "react-dom";
-
-const signInDefaultValues = {
-  email: "",
-  password: ""
-};
+import Link from "next/link";
+import { signInDefaultValues } from "@/lib/constants";
 
 export default function CredentialsSignInForm() {
   const [data, action] = useActionState(signInWithCredential, {
@@ -33,8 +30,6 @@ export default function CredentialsSignInForm() {
       </Button>
     );
   };
-
-  //   console.log(data, "data credentials");
 
   return (
     <form action={action} className="space-y-4">
@@ -76,6 +71,7 @@ export default function CredentialsSignInForm() {
             type={"password"}
             placeholder="••••••••"
             name="password"
+            defaultValue={signInDefaultValues.password}
             // value={password}
             // onChange={(e) => setPassword(e.target.value)}
             className="pl-10 pr-10"
@@ -90,6 +86,9 @@ export default function CredentialsSignInForm() {
         </div>
       </div>
       <SignInButton />
+      <Link className="text-sm text-blue-500" href={"/sign-up"}>
+        Si no estas registrado, registrate
+      </Link>
     </form>
   );
 }

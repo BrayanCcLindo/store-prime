@@ -9,7 +9,7 @@ import React from "react";
 import CredentialsSignInForm from "./credentials-signin-form";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import Link from "next/link";
+// import Link from "next/link";
 
 export default async function SignInPage({
   searchParams
@@ -26,9 +26,7 @@ export default async function SignInPage({
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
-            Bienvenido
-          </h1>
+          <h1 className="text-4xl font-bold mb-2">Bienvenido</h1>
           <p className="text-slate-600">Inicia sesión en tu cuenta</p>
         </div>
 
@@ -43,14 +41,7 @@ export default async function SignInPage({
           <CardContent className="space-y-4">
             <CredentialsSignInForm />
           </CardContent>
-          <Link className="text-sm text-blue-500" href={"/sign-up"}>
-            Si no estas registrado, registrate
-          </Link>
         </Card>
-
-        <p className="text-center text-xs text-slate-500 mt-6">
-          Al continuar, aceptas nuestros{" "}
-        </p>
       </div>
     </div>
   );

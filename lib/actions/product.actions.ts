@@ -2,14 +2,7 @@
 
 import { prisma } from "@/db/prisma";
 
-// import { prisma } from "@/db/prisma";
-// import { PrismaClient } from "../generated/prisma";
-
-// get latest products
-
 export async function latestProducts(number: number) {
-  //   const prisma = new PrismaClient();
-
   const data = prisma.product.findMany({
     take: number,
     orderBy: {

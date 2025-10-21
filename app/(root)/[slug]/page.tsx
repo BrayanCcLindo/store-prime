@@ -1,3 +1,4 @@
+import AddToCart from "@/components/product/add-to-cart";
 import ProductImages from "@/components/product/product-images";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,6 @@ import {
   RotateCcw,
   Share2,
   Shield,
-  ShoppingCart,
   Star,
   Truck
 } from "lucide-react";
@@ -71,7 +71,9 @@ export default async function ProductDetail({
             </div>
 
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold">${product.price}</span>
+              <span className="text-3xl font-bold">
+                ${product.price.toString()}
+              </span>
               <span className="text-sm text-muted-foreground">USD</span>
             </div>
           </div>
@@ -137,10 +139,20 @@ export default async function ProductDetail({
 
           {/* Botones de acción */}
           <div className="space-y-3">
-            <Button className="w-full" size="lg" disabled={product.stock === 0}>
+            {/* <Button className="w-full" size="lg" disabled={product.stock === 0}>
               <ShoppingCart className="w-4 h-4 mr-2" />
               {product.stock > 0 ? "Agregar al carrito" : "Sin stock"}
-            </Button>
+            </Button> */}
+            <AddToCart
+              item={{
+                productId: product.id,
+                image: product.images[0],
+                name: product.name,
+                price: product.price,
+                qty: 1,
+                slug: product.slug
+              }}
+            />
             <Button
               variant="outline"
               className="w-full"

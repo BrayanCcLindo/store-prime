@@ -1,21 +1,16 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { SignUpUser } from "@/lib/actions/user.action";
-import { Label } from "@radix-ui/react-label";
+import { signUpDefaultValues } from "@/lib/constants";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 
-const signUpDefaultValues = {
-  name: "",
-  email: "",
-  password: "",
-  confirmPassword: ""
-};
-
 export default function CredentialsSignUpForm() {
+  const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [data, action] = useActionState(SignUpUser, {
@@ -28,7 +23,9 @@ export default function CredentialsSignUpForm() {
 
   const SignUpButton = () => {
     const { pending } = useFormStatus();
-    return <Button>{pending ? "Submiting " : "Sign Up"}</Button>;
+    return (
+      <Button className="w-full">{pending ? "Submiting " : "Sign Up"}</Button>
+    );
   };
 
   return (
@@ -75,7 +72,7 @@ export default function CredentialsSignUpForm() {
           <Input
             id="password"
             name="password"
-            type={showConfirmPassword ? "text" : "password"}
+            type={showPassword ? "text" : "password"}
             placeholder="••••••••"
             defaultValue={signUpDefaultValues.password}
             //   value={formData.password}
@@ -83,11 +80,16 @@ export default function CredentialsSignUpForm() {
             className="pl-10"
           />
           <button
+            onMouseDown={() => setShowPassword(true)}
+            onMouseUp={() => setShowPassword(false)}
+            onMouseLeave={() => setShowPassword(false)}
+            onTouchStart={() => setShowPassword(true)}
+            onTouchEnd={() => setShowPassword(false)}
             type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            // onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
           >
-            {showConfirmPassword ? (
+            {showPassword ? (
               <EyeOff className="h-4 w-4" />
             ) : (
               <Eye className="h-4 w-4" />
@@ -111,8 +113,12 @@ export default function CredentialsSignUpForm() {
             className={`pl-10 pr-10`}
           />
           <button
+            onMouseDown={() => setShowConfirmPassword(true)}
+            onMouseUp={() => setShowConfirmPassword(false)}
+            onMouseLeave={() => setShowConfirmPassword(false)}
+            onTouchStart={() => setShowConfirmPassword(true)}
+            onTouchEnd={() => setShowConfirmPassword(false)}
             type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
           >
             {showConfirmPassword ? (

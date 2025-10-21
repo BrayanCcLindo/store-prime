@@ -10,6 +10,7 @@ import {
 import { redirect } from "next/navigation";
 import React from "react";
 import CredentialsSignUpForm from "./credentials-sign-up-form";
+import Link from "next/link";
 
 export default async function SignUpPage({
   searchParams
@@ -41,9 +42,12 @@ export default async function SignUpPage({
         <CardFooter className="flex flex-col space-y-2">
           <div className="text-sm text-center text-gray-600">
             ¿Ya tienes cuenta?{" "}
-            <button className="text-blue-600 hover:underline font-medium">
+            <Link
+              href={"/sign-in"}
+              className="text-blue-600 hover:underline font-medium"
+            >
               Inicia sesión
-            </button>
+            </Link>
           </div>
         </CardFooter>
       </Card>
