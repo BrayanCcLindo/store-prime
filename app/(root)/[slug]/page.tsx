@@ -71,7 +71,9 @@ export default async function ProductDetail({
             </div>
 
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold">${product.price}</span>
+              <span className="text-3xl font-bold">
+                ${product.price.toString()}
+              </span>
               <span className="text-sm text-muted-foreground">USD</span>
             </div>
           </div>
