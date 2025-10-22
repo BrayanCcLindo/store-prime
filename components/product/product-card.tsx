@@ -88,11 +88,11 @@ export default function ProductCard({ product }: { product: ProductType }) {
 
           <div className="flex items-center gap-2 mb-4">
             <span className="text-2xl font-bold text-gray-900">
-              ${product.price.toString()}
+              ${product.price}
             </span>
             {product.price > product.price && (
               <span className="text-lg text-gray-500 line-through">
-                ${product.price.toString()}
+                ${product.price}
               </span>
             )}
           </div>
