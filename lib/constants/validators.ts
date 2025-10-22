@@ -1,29 +1,15 @@
 import { z } from "zod";
-import { formatNumberWithDecimal } from "../utils";
-import { Prisma } from "@prisma/client";
+// import { formatNumberWithDecimal } from "../utils";
+// import { Prisma } from "@prisma/client";
 
 const currency = z
-  .union([z.string(), z.number(), z.instanceof(Prisma.Decimal)])
-  .transform(value => {
-    // Convierte todo a string primero
-    let stringValue: string;
-
-    if (value instanceof Prisma.Decimal) {
-      stringValue = value.toString();
-    } else if (typeof value === "number") {
-      stringValue = value.toString();
-    } else {
-      stringValue = value;
-    }
-
-    return stringValue;
+  .string()
+  .regex(/^\d{1,10}(\.\d{1,2})?$/, {
+    message: "Precio inválido. Formato: hasta 10 dígitos enteros y 2 decimales"
   })
-  .refine(value => {
-    const num = parseFloat(value);
-    if (isNaN(num)) return false;
-    return /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(num));
-  }, "Price must have exactly two decimal places")
-  .transform(value => formatNumberWithDecimal(parseFloat(value)));
+  .refine(val => parseFloat(val) >= 0, {
+    message: "El precio no puede ser negativo"
+  });
 
 export const insertProductSchema = z.object({
   name: z.string().min(1, "El nombre es requerido"),
