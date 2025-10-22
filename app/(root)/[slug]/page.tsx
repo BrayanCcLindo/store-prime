@@ -148,7 +148,7 @@ export default async function ProductDetail({
                 productId: product.id,
                 image: product.images[0],
                 name: product.name,
-                price: product.price,
+                price: product.price.toString(),
                 qty: 1,
                 slug: product.slug
               }}
