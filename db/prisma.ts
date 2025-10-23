@@ -8,13 +8,11 @@ export const prisma = new PrismaClient().$extends({
   result: {
     product: {
       price: {
-        needs: { price: true }, // ← ESTO FALTABA
         compute(product) {
           return product.price.toString();
         }
       },
       rating: {
-        needs: { rating: true }, // ← ESTO FALTABA
         compute(product) {
           return product.rating.toString();
         }
