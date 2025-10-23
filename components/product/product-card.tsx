@@ -74,7 +74,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
                 <Star
                   key={i}
                   className={`h-4 w-4 ${
-                    i < Math.floor(product.rating)
+                    i < Math.floor(parseInt(product.rating))
                       ? "text-yellow-400 fill-current"
                       : "text-gray-300"
                   }`}
@@ -88,11 +88,11 @@ export default function ProductCard({ product }: { product: ProductType }) {
 
           <div className="flex items-center gap-2 mb-4">
             <span className="text-2xl font-bold text-gray-900">
-              ${product.price.toString()}
+              ${product.price}
             </span>
             {product.price > product.price && (
               <span className="text-lg text-gray-500 line-through">
-                ${product.price.toString()}
+                ${product.price}
               </span>
             )}
           </div>

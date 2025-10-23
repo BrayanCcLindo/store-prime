@@ -8,7 +8,7 @@ import { z } from "zod";
 export type ProductType = z.infer<typeof insertProductSchema> & {
   name: string;
   id: string;
-  rating: number;
+  rating: string;
   createdAt: Date;
 };
 

@@ -2,7 +2,6 @@ import ProductList from "@/components/product/product-list";
 import { Button } from "@/components/ui/button";
 import { latestProducts } from "@/lib/actions/product.actions";
 import React from "react";
-// import sampleData from "@/db/sample-data";
 
 export const metadata = {
   title: "Home",

@@ -14,7 +14,7 @@ import { redirect } from "next/navigation";
 export default async function SignInPage({
   searchParams
 }: {
-  searchParams: { callbackUrl: string };
+  searchParams: Promise<{ callbackUrl: string }>;
 }) {
   const session = await auth();
   const { callbackUrl } = await searchParams;

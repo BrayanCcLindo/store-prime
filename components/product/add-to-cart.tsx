@@ -30,7 +30,7 @@ export default function AddToCart({ item }: { item: CardItem }) {
   };
   return (
     <Button type="button" onClick={handleAddToCart}>
-      Add to cart asd
+      Add to cart
     </Button>
   );
 }

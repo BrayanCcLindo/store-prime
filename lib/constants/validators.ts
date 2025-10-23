@@ -1,11 +1,16 @@
 import { z } from "zod";
+// import { formatNumberWithDecimal } from "../utils";
+// import { Prisma } from "@prisma/client";
 
-// const currency = z
-//   .string()
-//   .refine(
-//     value => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value))),
-//     "Price must have exactly two decimal places"
-//   );
+const currency = z
+  .string()
+  .regex(/^\d{1,10}(\.\d{1,2})?$/, {
+    message: "Precio inválido. Formato: hasta 10 dígitos enteros y 2 decimales"
+  })
+  .refine(val => parseFloat(val) >= 0, {
+    message: "El precio no puede ser negativo"
+  });
+
 export const insertProductSchema = z.object({
   name: z.string().min(1, "El nombre es requerido"),
   slug: z.string().min(1, "El slug es requerido"),
@@ -16,7 +21,7 @@ export const insertProductSchema = z.object({
   stock: z.coerce.number(),
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
-  price: z.number()
+  price: currency
 });
 
 //schema to validator sign in
@@ -59,15 +64,15 @@ export const cartItemSchema = z.object({
   slug: z.string().min(1, "Slug is required"),
   qty: z.number().int().nonnegative("Quantity must be a positive number"),
   image: z.string().min(1, "Image is required"),
-  price: z.number()
+  price: currency
 });
 
 export const insertCartSchema = z.object({
   items: z.array(cartItemSchema),
-  itemsPrice: z.number(),
-  totalPrice: z.number(),
-  shippingPrice: z.number(),
-  taxPrice: z.number(),
+  itemsPrice: currency,
+  totalPrice: currency,
+  shippingPrice: currency,
+  taxPrice: currency,
   sessionIdCart: z.string().min(1, "Session cart id is required"),
   userId: z.string().optional().nullable()
 });
