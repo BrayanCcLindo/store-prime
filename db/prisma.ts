@@ -1,19 +1,20 @@
-// import { PrismaClient } from "@/lib/generated/prisma";
-
 import { neonConfig } from "@neondatabase/serverless";
 import { PrismaClient } from "@prisma/client";
 import ws from "ws";
 
 neonConfig.webSocketConstructor = ws;
+
 export const prisma = new PrismaClient().$extends({
   result: {
     product: {
       price: {
+        needs: { price: true }, // ← ESTO FALTABA
         compute(product) {
           return product.price.toString();
         }
       },
       rating: {
+        needs: { rating: true }, // ← ESTO FALTABA
         compute(product) {
           return product.rating.toString();
         }
