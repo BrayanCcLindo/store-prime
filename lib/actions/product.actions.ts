@@ -3,13 +3,17 @@
 import { prisma } from "@/db/prisma";
 
 export async function latestProducts(number: number) {
-  const data = prisma.product.findMany({
+  const products = prisma.product.findMany({
     take: number,
     orderBy: {
       createdAt: "desc"
     }
   });
-  return data;
+  return (await products).map(product => ({
+    ...product,
+    price: product.price.toString(),
+    rating: product.rating.toString()
+  }));
 }
 
 //get single product by slug
