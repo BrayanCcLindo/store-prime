@@ -6,7 +6,6 @@ import { cookies } from "next/headers";
 import { convertToPlainObject, round2 } from "../utils";
 import { cartItemSchema, insertCartSchema } from "../constants/validators";
 import { revalidatePath } from "next/cache";
-import { Prisma } from "@prisma/client";
 
 const calcPrice = (items: CardItem[]) => {
   const itemsPrice = round2(
@@ -83,7 +82,8 @@ export async function addItemToCart(data: CardItem) {
       await prisma.cart.update({
         where: { id: cart.id },
         data: {
-          items: cart.items as Prisma.CartUpdateitemsInput[],
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          items: cart.items as any,
           ...calcPrice(cart.items as CardItem[])
         }
       });
