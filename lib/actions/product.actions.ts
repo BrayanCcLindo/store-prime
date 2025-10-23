@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/db/prisma";
+import { ProductType } from "@/type/productType";
 
 export async function latestProducts(number: number) {
   const products = prisma.product.findMany({
@@ -9,7 +10,7 @@ export async function latestProducts(number: number) {
       createdAt: "desc"
     }
   });
-  return (await products).map(product => ({
+  return (await products).map((product: ProductType) => ({
     ...product,
     price: product.price.toString(),
     rating: product.rating.toString()
