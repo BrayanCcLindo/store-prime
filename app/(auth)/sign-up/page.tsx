@@ -15,11 +15,10 @@ import Link from "next/link";
 export default async function SignUpPage({
   searchParams
 }: {
-  searchParams: { callbackUrl: string };
+  searchParams: Promise<{ callbackUrl: string }>;
 }) {
   const session = await auth();
-
-  const { callbackUrl } = searchParams;
+  const { callbackUrl } = await searchParams;
 
   if (session) {
     return redirect(callbackUrl || "/");
