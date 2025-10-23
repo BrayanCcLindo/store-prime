@@ -1,5 +1,5 @@
 import { neonConfig } from "@neondatabase/serverless";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import ws from "ws";
 
 neonConfig.webSocketConstructor = ws;
@@ -8,12 +8,12 @@ export const prisma = new PrismaClient().$extends({
   result: {
     product: {
       price: {
-        compute(product) {
+        compute(product: { price: Prisma.Decimal }) {
           return product.price.toString();
         }
       },
       rating: {
-        compute(product) {
+        compute(product: { rating: Prisma.Decimal }) {
           return product.rating.toString();
         }
       }
@@ -21,25 +21,25 @@ export const prisma = new PrismaClient().$extends({
     cart: {
       itemsPrice: {
         needs: { itemsPrice: true },
-        compute(cart) {
+        compute(cart: { itemsPrice: Prisma.Decimal }) {
           return cart.itemsPrice.toString();
         }
       },
       shippingPrice: {
         needs: { shippingPrice: true },
-        compute(cart) {
+        compute(cart: { shippingPrice: Prisma.Decimal }) {
           return cart.shippingPrice.toString();
         }
       },
       taxPrice: {
         needs: { taxPrice: true },
-        compute(cart) {
+        compute(cart: { taxPrice: Prisma.Decimal }) {
           return cart.taxPrice.toString();
         }
       },
       totalPrice: {
         needs: { totalPrice: true },
-        compute(cart) {
+        compute(cart: { totalPrice: Prisma.Decimal }) {
           return cart.totalPrice.toString();
         }
       }
